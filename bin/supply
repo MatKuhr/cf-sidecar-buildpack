@@ -1,0 +1,23 @@
+#!/bin/bash
+
+set -e
+
+BUILD_DIR=$1
+CACHE_DIR=$2
+DEPS_DIR=$3
+DEPS_IDX=$4
+
+echo "-----> Running sidecar supply"
+
+echo '---
+processes:
+- type: "sidecar_process"
+  command: "./spire-agent run -config agent.conf"
+  limits:
+    memory: 50
+  platforms:
+    cloudfoundry:
+      sidecar_for: [ "web"]
+' > "$DEPS_DIR"/"$DEPS_IDX"/launch.yml
+
+echo "-----> Wrote sidecar config to $DEPS_DIR/$DEPS_IDX/launch.yml"
